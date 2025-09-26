@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"go-links-shorter/configs"
 	"go-links-shorter/internal/auth"
+	"go-links-shorter/pkg/db"
 
 	"net/http"
 )
 
 func main() {
 	conf := configs.LoadConfig()
+	_ = db.NewDB(conf)
 	router := http.NewServeMux()
 
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
