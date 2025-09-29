@@ -26,7 +26,7 @@ func NewLinkHandler(router *http.ServeMux, deps LinkHandlerDeps) {
 
 func (handler *LinkHandler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		body, err := req.HandlerBody[LinkCreateRequest](w, r)
+		body, err := req.HandlerBody[LinkCreateRequest](&w, r)
 		if err != nil {
 			return
 		}
