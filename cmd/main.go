@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-links-shorter/configs"
 	"go-links-shorter/internal/auth"
+	"go-links-shorter/internal/link"
 	"go-links-shorter/pkg/db"
 
 	"net/http"
@@ -11,11 +12,18 @@ import (
 
 func main() {
 	conf := configs.LoadConfig()
-	_ = db.NewDB(conf)
+	db := db.NewDB(conf)
 	router := http.NewServeMux()
 
+	//Repositories
+	linkRepository := link.LinkRepository(db)
+
+	//Handlers
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
 		Config: conf,
+	})
+	link.NewLinkHandler(router, link.LinkHandlerDeps{
+		LinkRepository: linkRepository,
 	})
 
 	server := http.Server{
